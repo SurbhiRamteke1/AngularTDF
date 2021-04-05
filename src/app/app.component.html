@@ -1,0 +1,107 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col col-lg-12 col-md-6 col-sm-3">
+  <h1 > Enrollment Form</h1>
+</div>
+</div>
+
+<div class=" alert alert-danger" *ngIf="errorMsg">
+{{errorMsg}}
+</div>
+<form #userForm=ngForm novalidate (ngSubmit)="OnSubmit()"  *ngIf="!submitted"> 
+  {{userForm.value | json}}
+  {{userForm.form.valid}}
+
+<hr/>
+  {{userModel | json}}
+  
+  <!--<div  ngModelGroup="address">
+    <div class="form-check">
+    <div class="row">
+      <div class="col col-lg-3">
+    
+      <label> Street 1</label>
+      <input  class="form-control"type="text" ngModel name ="street1">
+    </div>
+  </div>
+  </div>
+  
+  <div class="row">
+    <div class="col col-lg-3">
+  
+  <div class="form-check">
+    <label> Street 2</label>
+    <input  class="form-control" type="text" ngModel name ="street2">
+  </div>
+  </div>
+  </div>
+  
+  </div>!-->
+  <div class="row">  
+    <div class="col col-lg-3"><div class="form-group">
+<label>Name</label>
+<input type="text" #name ="ngModel"  [class.is-invalid]="name.invalid && name.touched" required class="form-control"  name ="userName" [(ngModel)] = "userModel.name">
+  </div>
+</div>
+</div>
+
+<small  class="text-danger"[class.d-none]="name.valid || name.untouched">Name is Empty</small>
+<!--{{name.className}}!-->
+{{name.untouched}}
+{{name.pristine}}
+  <div class="form-group">
+    <div class="row">  
+      <div class="col col-lg-3">
+    <label>Email</label>
+    <input type="email"  [class.is-invalid]="emailA.invalid && emailA.touched" required #emailA="ngModel" class="form-control" name="email" [(ngModel)]="userModel.email">
+    <div *ngIf="emailA.errors && (emailA.valid || emailA.touched)">
+      <small class="text-danger" *ngIf="emailA.errors.required">email is empty</small>
+    </div>
+      </div>
+      </div>
+  </div>
+      <div class="form-group">
+        <div class="row">  
+          <div class="col col-lg-3">
+        <label>Phone Number</label>
+        <input type="tel"  #phone ='ngModel'[class.is-invalid] ="phone.invalid && phone.touched"  pattern="^\d{10}$" class="form-control" name="phoneNum" [(ngModel)]="userModel.phone">
+          </div>
+          </div>
+          <div *ngIf="phone.errors && (phone.valid || phone.touched)"> 
+<small class="text-danger" *ngIf="phone.errors.required">Phone number is Empty</small>
+<small class="text-danger" *ngIf="phone.errors.pattern">Phone number must be 10 digits</small>
+          </div>
+</div>
+
+
+      <div class="form-group ">
+        <select  (blur)="ValidateTopic(topic.value)" (change)="ValidateTopic(topic.value)" #topic="ngModel" [class.is-invalid]="topicHasError && topic.touched"class="custom-select" name ="topic" [(ngModel)]="userModel.topics" >
+          <option value="default"  >I am  not intereseted</option>
+          <option *ngFor ="let sub of topics" >{{sub}}</option>
+        </select>
+        <small class="text-danger" [class.d-none]="!topicHasError ||topic.touched"> please choose Topic </small>
+      </div>   
+      
+      <div class="mb-3">
+        <label>Time Preference</label>
+        <div class="form-check">
+        <input type="radio" class="form-check-input" name ="timePreference" [(ngModel)]="userModel.timePreference" value="morning">
+<label class="form-check-label">Morning(9am-6pm)</label>
+</div>
+
+
+<div class="form-check">
+<input type="radio" class="form-check-input" name ="timePreference" [(ngModel)]="userModel.timePreference" value="evening">
+<label class="form-check-label">Night(9pm-6pm)</label>
+</div>
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" name ="promotion" [(ngModel)]="userModel.promotion">
+        <label class="form-check-label">Send me promotions!</label>
+
+      </div>
+      <button [disabled]="userForm.form.invalid || topicHasError "  class="btn btn-primary btn-sm">Submit Form</button>
+
+</form>
+</div>
